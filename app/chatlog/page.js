@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import './chatlog.css';
 
 export default function ChatlogPage() {
@@ -9,6 +9,8 @@ export default function ChatlogPage() {
   const API_KEY = '1NGDFCYIU1DA4HZAUIA755N7HBCNYJ6BHG';
 
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Get query parameters
   const viewParam = searchParams.get('view');
@@ -24,6 +26,7 @@ export default function ChatlogPage() {
   const [ensNames, setEnsNames] = useState({});
   const [filterHumanOnly, setFilterHumanOnly] = useState(humanParam === 'true' || humanParam === '1');
   const [expandedMessage, setExpandedMessage] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const resolveENS = async (address) => {
     if (ensNames[address]) {
@@ -125,6 +128,8 @@ export default function ChatlogPage() {
       setLoading(true);
       setError(null);
       setTransactions([]);
+    } else {
+      setIsRefreshing(true);
     }
 
     try {
@@ -163,6 +168,8 @@ export default function ChatlogPage() {
     } finally {
       if (!silent) {
         setLoading(false);
+      } else {
+        setTimeout(() => setIsRefreshing(false), 500); // Show indicator for at least 500ms
       }
     }
   };
@@ -173,6 +180,34 @@ export default function ChatlogPage() {
       fetchTransactions();
     }
   }, []); // Run only once on mount
+
+  // Update URL with current state
+  const updateURL = (address, view, human) => {
+    const params = new URLSearchParams();
+
+    if (address) {
+      params.set('address', address);
+    }
+
+    if (view === 'grouped') {
+      params.set('view', 'grouped');
+    }
+
+    if (human) {
+      params.set('human', 'true');
+    }
+
+    const queryString = params.toString();
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+    router.push(newUrl, { scroll: false });
+  };
+
+  // Update URL when state changes
+  useEffect(() => {
+    if (transactions.length > 0) {
+      updateURL(targetAddress, viewMode, filterHumanOnly);
+    }
+  }, [viewMode, filterHumanOnly, targetAddress, transactions.length]);
 
   // Auto-refresh transactions every 10 seconds
   useEffect(() => {
@@ -277,6 +312,13 @@ export default function ChatlogPage() {
 
   return (
     <div className="chatlog-container">
+      {/* Refresh Indicator */}
+      {isRefreshing && (
+        <div className="refresh-indicator">
+          <div className="refresh-pulse"></div>
+        </div>
+      )}
+
       <div className="chatlog-header">
         <h1 className="chatlog-title">Ethereum Transaction Viewer</h1>
 
