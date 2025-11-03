@@ -367,52 +367,17 @@ export default function ChatlogPage() {
         <h1 className="chatlog-title">Ethereum Transaction Viewer</h1>
 
         <form onSubmit={handleSearch} className="search-form">
-          <div className="search-inputs-wrapper">
-            <div className="search-inputs">
-              <div className="address-input-container">
-                <input
-                  type="text"
-                  value={searchAddress}
-                  onChange={(e) => setSearchAddress(e.target.value)}
-                  onFocus={() => savedAddresses.length > 0 && setShowAddressDropdown(true)}
-                  placeholder="Enter Ethereum address (0x...)"
-                  className="address-input"
-                />
-                {savedAddresses.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => setShowAddressDropdown(!showAddressDropdown)}
-                    className="dropdown-toggle"
-                  >
-                    ▼
-                  </button>
-                )}
-                {showAddressDropdown && savedAddresses.length > 0 && (
-                  <div className="address-dropdown">
-                    <div className="dropdown-header">Recent Searches</div>
-                    {savedAddresses.map((saved, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => selectSavedAddress(saved.address)}
-                        className="dropdown-item"
-                      >
-                        <div className="dropdown-item-content">
-                          {saved.ensName && (
-                            <div className="dropdown-ens">{saved.ensName}</div>
-                          )}
-                          <div className="dropdown-address">
-                            {saved.address.slice(0, 10)}...{saved.address.slice(-8)}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <button type="submit" className="search-btn">
-                Search
-              </button>
-            </div>
+          <div className="search-inputs">
+            <input
+              type="text"
+              value={searchAddress}
+              onChange={(e) => setSearchAddress(e.target.value)}
+              placeholder="Enter Ethereum address (0x...)"
+              className="address-input"
+            />
+            <button type="submit" className="search-btn">
+              Search
+            </button>
           </div>
         </form>
 
@@ -423,6 +388,28 @@ export default function ChatlogPage() {
           )}
           <code className="address-code">{targetAddress}</code>
         </p>
+
+        {savedAddresses.length > 0 && (
+          <div className="recent-addresses">
+            <p className="recent-addresses-label">Recent Searches:</p>
+            <div className="recent-addresses-list">
+              {savedAddresses.map((saved, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => selectSavedAddress(saved.address)}
+                  className="recent-address-btn"
+                >
+                  {saved.ensName && (
+                    <span className="recent-ens">{saved.ensName}</span>
+                  )}
+                  <span className="recent-address-text">
+                    {saved.address.slice(0, 10)}...{saved.address.slice(-8)}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <button onClick={fetchTransactions} disabled={loading} className="load-btn">
           {loading ? 'Loading...' : 'Load Transactions'}

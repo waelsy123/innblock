@@ -69,18 +69,9 @@
   }
 }
 
-.search-inputs-wrapper {
-  position: relative;
-}
-
-.address-input-container {
-  position: relative;
-  flex: 1;
-}
-
 .address-input {
-  width: 100%;
-  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  flex: 1;
+  padding: 0.5rem 1rem;
   background-color: #1a1a1a;
   border: 1px solid #333333;
   border-radius: 0.5rem;
@@ -99,78 +90,51 @@
   color: #666666;
 }
 
-.dropdown-toggle {
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  color: #00d084;
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  transition: color 0.2s;
+.recent-addresses {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-.dropdown-toggle:hover {
-  color: #00ff9d;
-}
-
-.address-dropdown {
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  left: 0;
-  right: 0;
-  background-color: #0a0a0a;
-  border: 1px solid #00d084;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 208, 132, 0.2);
-  z-index: 100;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.dropdown-header {
-  padding: 0.75rem 1rem;
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #00d084;
-  border-bottom: 1px solid #1a1a1a;
-  text-transform: uppercase;
-}
-
-.dropdown-item {
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  border-bottom: 1px solid #1a1a1a;
-  transition: background-color 0.2s;
-}
-
-.dropdown-item:last-child {
-  border-bottom: none;
-}
-
-.dropdown-item:hover {
-  background-color: #1a1a1a;
-}
-
-.dropdown-item-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.dropdown-ens {
+.recent-addresses-label {
+  color: #888888;
   font-family: 'Courier New', monospace;
   font-size: 0.875rem;
-  font-weight: 600;
-  color: #00d084;
+  margin-bottom: 0.5rem;
 }
 
-.dropdown-address {
+.recent-addresses-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.recent-address-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.5rem 0.75rem;
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
+  border-radius: 0.5rem;
   font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.recent-address-btn:hover {
+  background-color: #262626;
+  border-color: #00d084;
+  box-shadow: 0 0 10px rgba(0, 208, 132, 0.2);
+}
+
+.recent-ens {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #00d084;
+  margin-bottom: 0.25rem;
+}
+
+.recent-address-text {
   font-size: 0.75rem;
   color: #888888;
 }
