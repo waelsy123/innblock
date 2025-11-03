@@ -556,3 +556,28 @@
   color: #00ff9d;
   text-decoration: underline;
 }
+
+/* Address Display Styles */
+.address-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.address-ens {
+  font-weight: 600;
+  color: #00d084;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+}
+
+.address-link {
+  color: #00d084;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  transition: color 0.2s;
+}
+
+.address-link:hover {
+  color: #00ff9d;
+  text-decoration: underline;
+}

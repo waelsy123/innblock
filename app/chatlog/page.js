@@ -1,19 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import './chatlog.css';
 
 export default function ChatlogPage() {
   const DEFAULT_ADDRESS = '0x506d1f9efe24f0d47853adca907eb8d89ae03207';
   const API_KEY = '1NGDFCYIU1DA4HZAUIA755N7HBCNYJ6BHG';
-  const [targetAddress, setTargetAddress] = useState(DEFAULT_ADDRESS);
-  const [searchAddress, setSearchAddress] = useState(DEFAULT_ADDRESS);
+
+  const searchParams = useSearchParams();
+
+  // Get query parameters
+  const viewParam = searchParams.get('view');
+  const humanParam = searchParams.get('human');
+  const addressParam = searchParams.get('address');
+
+  const [targetAddress, setTargetAddress] = useState(addressParam || DEFAULT_ADDRESS);
+  const [searchAddress, setSearchAddress] = useState(addressParam || DEFAULT_ADDRESS);
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [viewMode, setViewMode] = useState('all');
+  const [viewMode, setViewMode] = useState(viewParam === 'grouped' ? 'grouped' : 'all');
   const [ensNames, setEnsNames] = useState({});
-  const [filterHumanOnly, setFilterHumanOnly] = useState(false);
+  const [filterHumanOnly, setFilterHumanOnly] = useState(humanParam === 'true' || humanParam === '1');
   const [expandedMessage, setExpandedMessage] = useState(null);
 
   const resolveENS = async (address) => {
@@ -111,10 +120,12 @@ export default function ChatlogPage() {
     });
   };
 
-  const fetchTransactions = async () => {
-    setLoading(true);
-    setError(null);
-    setTransactions([]);
+  const fetchTransactions = async (silent = false) => {
+    if (!silent) {
+      setLoading(true);
+      setError(null);
+      setTransactions([]);
+    }
 
     try {
       const response = await fetch(
@@ -146,11 +157,33 @@ export default function ChatlogPage() {
 
       fetchENSNames(allAddresses);
     } catch (err) {
-      setError(err.message);
+      if (!silent) {
+        setError(err.message);
+      }
     } finally {
-      setLoading(false);
+      if (!silent) {
+        setLoading(false);
+      }
     }
   };
+
+  // Auto-load transactions if address is provided in query params
+  useEffect(() => {
+    if (addressParam) {
+      fetchTransactions();
+    }
+  }, []); // Run only once on mount
+
+  // Auto-refresh transactions every 10 seconds
+  useEffect(() => {
+    if (transactions.length === 0) return;
+
+    const interval = setInterval(() => {
+      fetchTransactions(true); // Silent refresh
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(interval);
+  }, [transactions.length, targetAddress]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -228,13 +261,13 @@ export default function ChatlogPage() {
       : address;
 
     return (
-      <div className="flex flex-col">
-        {ensName && <span className="font-semibold text-blue-700">{ensName}</span>}
+      <div className="address-display">
+        {ensName && <span className="address-ens">{ensName}</span>}
         <a
           href={`https://etherscan.io/address/${address}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 hover:underline font-mono text-xs"
+          className="address-link"
         >
           {displayAddress}
         </a>
