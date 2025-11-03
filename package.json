@@ -15,10 +15,14 @@
   "author": "Wael Almattar",
   "license": "ISC",
   "dependencies": {
+    "@tanstack/react-query": "^5.90.6",
     "@vercel/analytics": "^1.5.0",
+    "@web3modal/wagmi": "^5.1.11",
     "next": "^16.0.1",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "viem": "^2.38.6",
+    "wagmi": "^2.19.2"
   },
   "engines": {
     "node": ">=18.0.0"

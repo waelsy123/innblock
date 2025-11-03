@@ -33,6 +33,12 @@ export default function Navbar() {
             >
               BROADCAST REEL
             </Link>
+            <Link
+              href="/send"
+              className={`nav-btn ${pathname === '/send' ? 'active' : ''}`}
+            >
+              SEND MESSAGE
+            </Link>
           </div>
         </div>
       </div>

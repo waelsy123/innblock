@@ -1,0 +1,291 @@
+.send-container {
+  min-height: 100vh;
+  background-color: #000000;
+  padding: 6rem 2rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.send-header {
+  background-color: #0a0a0a;
+  border-radius: 0.5rem;
+  border: 1px solid #1a1a1a;
+  box-shadow: 0 10px 15px -3px rgba(0, 208, 132, 0.1);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.send-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  color: #00d084;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(0, 208, 132, 0.3);
+}
+
+.send-subtitle {
+  font-size: 0.875rem;
+  color: #888888;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 1.5rem;
+}
+
+.connect-section {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.connect-prompt {
+  color: #888888;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 1.5rem;
+}
+
+.connectors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.connector-btn {
+  padding: 0.75rem 2rem;
+  background-color: #00d084;
+  color: #000000;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  transition: all 0.2s;
+  min-width: 200px;
+}
+
+.connector-btn:hover {
+  background-color: #00ff9d;
+  box-shadow: 0 0 15px rgba(0, 208, 132, 0.5);
+}
+
+.wallet-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.connected-address {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.address-label {
+  color: #888888;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+}
+
+.address-code {
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  color: #00d084;
+  font-family: 'Courier New', monospace;
+}
+
+.disconnect-btn {
+  padding: 0.5rem 1rem;
+  background-color: #1a1a1a;
+  color: #888888;
+  border: 1px solid #333333;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.disconnect-btn:hover {
+  background-color: #262626;
+  border-color: #ff6666;
+  color: #ff6666;
+}
+
+.send-form-container {
+  background-color: #0a0a0a;
+  border-radius: 0.5rem;
+  border: 1px solid #1a1a1a;
+  box-shadow: 0 10px 15px -3px rgba(0, 208, 132, 0.1);
+  padding: 2rem;
+}
+
+.send-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #00d084;
+}
+
+.form-input,
+.form-textarea {
+  padding: 0.75rem 1rem;
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
+  border-radius: 0.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: #cccccc;
+  transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #00d084;
+  box-shadow: 0 0 0 2px rgba(0, 208, 132, 0.2);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #666666;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-hint {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #666666;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.send-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background-color: #00d084;
+  color: #000000;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.send-btn:hover:not(:disabled) {
+  background-color: #00ff9d;
+  box-shadow: 0 0 15px rgba(0, 208, 132, 0.5);
+}
+
+.send-btn:disabled {
+  background-color: #333333;
+  color: #666666;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.reset-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #1a1a1a;
+  color: #888888;
+  border: 1px solid #333333;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.reset-btn:hover {
+  background-color: #262626;
+  border-color: #00d084;
+  color: #00d084;
+}
+
+.error-msg {
+  background-color: #1a0000;
+  border: 1px solid #ff0000;
+  color: #ff6666;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+}
+
+.success-msg {
+  background-color: #0a1a0a;
+  border: 1px solid #00d084;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  font-family: 'Courier New', monospace;
+}
+
+.success-title {
+  font-weight: 600;
+  color: #00d084;
+  margin-bottom: 0.5rem;
+}
+
+.tx-link {
+  color: #00d084;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.tx-link:hover {
+  color: #00ff9d;
+  text-decoration: underline;
+}
+
+.confirming-text {
+  color: #888888;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.success-text {
+  color: #00d084;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
