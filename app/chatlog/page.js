@@ -263,6 +263,8 @@ function ChatlogContent() {
       setViewMode('all');
       saveAddress(address);
       setShowAddressDropdown(false);
+      // Trigger fetch after state is updated
+      setTimeout(() => fetchTransactions(), 0);
     }
   };
 
@@ -271,6 +273,8 @@ function ChatlogContent() {
     setTargetAddress(address);
     setTransactions([]);
     setShowAddressDropdown(false);
+    // Trigger fetch after state is updated
+    setTimeout(() => fetchTransactions(), 0);
   };
 
   const groupConversations = () => {
@@ -410,10 +414,6 @@ function ChatlogContent() {
             </div>
           </div>
         )}
-
-        <button onClick={fetchTransactions} disabled={loading} className="load-btn">
-          {loading ? 'Loading...' : 'Load Transactions'}
-        </button>
 
         {transactions.length > 0 && (
           <div className="view-controls">
