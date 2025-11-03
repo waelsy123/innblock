@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAccount, useConnect, useDisconnect, useSendTransaction, useWaitForTransactionReceipt } from 'wagmi';
 import { parseEther } from 'viem';
 import './send.css';
 
 export default function SendMessagePage() {
   const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+  const API_KEY = '1NGDFCYIU1DA4HZAUIA755N7HBCNYJ6BHG';
 
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
@@ -17,6 +18,48 @@ export default function SendMessagePage() {
   const [recipient, setRecipient] = useState(ZERO_ADDRESS);
   const [message, setMessage] = useState('');
   const [ethAmount, setEthAmount] = useState('0');
+  const [ensNames, setEnsNames] = useState({});
+
+  const resolveENS = async (address) => {
+    if (!address || address === ZERO_ADDRESS) return null;
+    if (ensNames[address]) return ensNames[address];
+
+    try {
+      const reverseResponse = await fetch(
+        `https://api.etherscan.io/v2/api?chainid=1&module=account&action=addresstotag&address=${address}&apikey=${API_KEY}`
+      );
+      const reverseData = await reverseResponse.json();
+
+      if (reverseData.status === '1' && reverseData.result && reverseData.result.length > 0) {
+        return reverseData.result[0].name;
+      }
+    } catch (e) {
+      // Silent fail
+    }
+    return null;
+  };
+
+  // Fetch ENS for connected wallet address
+  useEffect(() => {
+    if (address) {
+      resolveENS(address).then(ens => {
+        if (ens) {
+          setEnsNames(prev => ({ ...prev, [address]: ens }));
+        }
+      });
+    }
+  }, [address]);
+
+  // Fetch ENS for recipient address
+  useEffect(() => {
+    if (recipient && recipient !== ZERO_ADDRESS) {
+      resolveENS(recipient).then(ens => {
+        if (ens) {
+          setEnsNames(prev => ({ ...prev, [recipient]: ens }));
+        }
+      });
+    }
+  }, [recipient]);
 
   const encodeMessage = (text) => {
     return '0x' + Array.from(text)
@@ -76,6 +119,9 @@ export default function SendMessagePage() {
           <div className="wallet-info">
             <div className="connected-address">
               <span className="address-label">Connected:</span>
+              {ensNames[address] && (
+                <span className="ens-name">{ensNames[address]}</span>
+              )}
               <code className="address-code">{address}</code>
             </div>
             <button onClick={() => disconnect()} className="disconnect-btn">
@@ -100,7 +146,12 @@ export default function SendMessagePage() {
                 placeholder="0x..."
                 className="form-input"
               />
-              <p className="form-hint">Default is zero address (burn address)</p>
+              {ensNames[recipient] && recipient !== ZERO_ADDRESS && (
+                <p className="form-ens">📛 {ensNames[recipient]}</p>
+              )}
+              <p className="form-hint">
+                {recipient === ZERO_ADDRESS ? 'Zero address (burn address)' : 'Enter recipient address'}
+              </p>
             </div>
 
             <div className="form-group">
