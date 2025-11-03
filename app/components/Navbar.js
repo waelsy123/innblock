@@ -27,6 +27,12 @@ export default function Navbar() {
             >
               CHATLOG
             </Link>
+            <Link
+              href="/broadcast"
+              className={`nav-btn ${pathname === '/broadcast' ? 'active' : ''}`}
+            >
+              BROADCAST REEL
+            </Link>
           </div>
         </div>
       </div>
