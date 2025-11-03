@@ -102,6 +102,15 @@ function BroadcastReelContent() {
       return false;
     }
 
+    // Exclude messages with too many non-ASCII or control characters
+    const nonAsciiCount = (message.match(/[^\x20-\x7E]/g) || []).length;
+    const nonAsciiRatio = nonAsciiCount / message.length;
+
+    // Reject if more than 20% non-ASCII characters (garbled text)
+    if (nonAsciiRatio > 0.2) {
+      return false;
+    }
+
     // Exclude messages that look like code
     const codePatterns = [
       /function\s*\(/i,
@@ -121,12 +130,21 @@ function BroadcastReelContent() {
       return false;
     }
 
+    // Count alphanumeric characters (letters and numbers)
+    const alphanumericCount = (message.match(/[a-zA-Z0-9]/g) || []).length;
+    const alphanumericRatio = alphanumericCount / message.length;
+
+    // Require at least 50% alphanumeric characters
+    if (alphanumericRatio < 0.5) {
+      return false;
+    }
+
     // Check for reasonable character ratio
-    const readableChars = message.match(/[\p{L}\p{N}\s.,!?;:'"()]/gu);
+    const readableChars = message.match(/[a-zA-Z0-9\s.,!?;:'"()\-]/g);
     const readableRatio = readableChars ? readableChars.length / message.length : 0;
 
-    // More strict: require 70% readable characters instead of 50%
-    return readableRatio > 0.7 && message.length >= 3;
+    // More strict: require 80% readable characters
+    return readableRatio > 0.8 && message.length >= 3;
   };
 
   const decodeMessage = (input) => {
