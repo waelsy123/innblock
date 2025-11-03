@@ -27,6 +27,40 @@ export default function ChatlogPage() {
   const [filterHumanOnly, setFilterHumanOnly] = useState(humanParam === 'true' || humanParam === '1');
   const [expandedMessage, setExpandedMessage] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [showAddressDropdown, setShowAddressDropdown] = useState(false);
+
+  // Load saved addresses from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('searchedAddresses');
+    if (saved) {
+      setSavedAddresses(JSON.parse(saved));
+    }
+  }, []);
+
+  // Save address to localStorage
+  const saveAddress = (address) => {
+    if (!address || address.length < 10) return;
+
+    const saved = localStorage.getItem('searchedAddresses');
+    let addresses = saved ? JSON.parse(saved) : [];
+
+    // Remove if already exists (to move it to front)
+    addresses = addresses.filter((addr) => addr.address !== address);
+
+    // Add to front with timestamp
+    addresses.unshift({
+      address,
+      timestamp: Date.now(),
+      ensName: ensNames[address] || null,
+    });
+
+    // Keep only last 10 addresses
+    addresses = addresses.slice(0, 10);
+
+    localStorage.setItem('searchedAddresses', JSON.stringify(addresses));
+    setSavedAddresses(addresses);
+  };
 
   const resolveENS = async (address) => {
     if (ensNames[address]) {
@@ -223,10 +257,20 @@ export default function ChatlogPage() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchAddress.trim()) {
-      setTargetAddress(searchAddress.trim());
+      const address = searchAddress.trim();
+      setTargetAddress(address);
       setTransactions([]);
       setViewMode('all');
+      saveAddress(address);
+      setShowAddressDropdown(false);
     }
+  };
+
+  const selectSavedAddress = (address) => {
+    setSearchAddress(address);
+    setTargetAddress(address);
+    setTransactions([]);
+    setShowAddressDropdown(false);
   };
 
   const groupConversations = () => {
@@ -323,17 +367,52 @@ export default function ChatlogPage() {
         <h1 className="chatlog-title">Ethereum Transaction Viewer</h1>
 
         <form onSubmit={handleSearch} className="search-form">
-          <div className="search-inputs">
-            <input
-              type="text"
-              value={searchAddress}
-              onChange={(e) => setSearchAddress(e.target.value)}
-              placeholder="Enter Ethereum address (0x...)"
-              className="address-input"
-            />
-            <button type="submit" className="search-btn">
-              Search
-            </button>
+          <div className="search-inputs-wrapper">
+            <div className="search-inputs">
+              <div className="address-input-container">
+                <input
+                  type="text"
+                  value={searchAddress}
+                  onChange={(e) => setSearchAddress(e.target.value)}
+                  onFocus={() => savedAddresses.length > 0 && setShowAddressDropdown(true)}
+                  placeholder="Enter Ethereum address (0x...)"
+                  className="address-input"
+                />
+                {savedAddresses.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAddressDropdown(!showAddressDropdown)}
+                    className="dropdown-toggle"
+                  >
+                    ▼
+                  </button>
+                )}
+                {showAddressDropdown && savedAddresses.length > 0 && (
+                  <div className="address-dropdown">
+                    <div className="dropdown-header">Recent Searches</div>
+                    {savedAddresses.map((saved, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => selectSavedAddress(saved.address)}
+                        className="dropdown-item"
+                      >
+                        <div className="dropdown-item-content">
+                          {saved.ensName && (
+                            <div className="dropdown-ens">{saved.ensName}</div>
+                          )}
+                          <div className="dropdown-address">
+                            {saved.address.slice(0, 10)}...{saved.address.slice(-8)}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <button type="submit" className="search-btn">
+                Search
+              </button>
+            </div>
           </div>
         </form>
 
