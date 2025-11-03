@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import './chatlog.css';
 
-export default function ChatlogPage() {
+function ChatlogContent() {
   const DEFAULT_ADDRESS = '0x506d1f9efe24f0d47853adca907eb8d89ae03207';
   const API_KEY = '1NGDFCYIU1DA4HZAUIA755N7HBCNYJ6BHG';
 
@@ -602,5 +602,13 @@ export default function ChatlogPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ChatlogPage() {
+  return (
+    <Suspense fallback={<div className="chatlog-container"><div className="loading-container"><div className="spinner"></div><p>Loading...</p></div></div>}>
+      <ChatlogContent />
+    </Suspense>
   );
 }
