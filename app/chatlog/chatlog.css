@@ -1,0 +1,486 @@
+.chatlog-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 6rem 2rem 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.chatlog-header {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.chatlog-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.search-form {
+  margin-bottom: 1rem;
+}
+
+.search-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .search-inputs {
+    flex-direction: row;
+  }
+}
+
+.address-input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.address-input:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #3b82f6;
+  border-color: transparent;
+}
+
+.search-btn {
+  padding: 0.5rem 1.5rem;
+  background-color: #16a34a;
+  color: white;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-btn:hover {
+  background-color: #15803d;
+}
+
+.current-address {
+  color: #4b5563;
+  margin-bottom: 1rem;
+}
+
+.ens-name {
+  margin-left: 0.5rem;
+  font-weight: 600;
+  color: #1d4ed8;
+}
+
+.address-code {
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+}
+
+.load-btn {
+  padding: 0.5rem 1.5rem;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.load-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.load-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.view-controls {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+@media (min-width: 640px) {
+  .view-controls {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.view-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.view-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.view-btn:hover {
+  background-color: #d1d5db;
+}
+
+.view-btn.active {
+  background-color: #2563eb;
+  color: white;
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  background-color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  transition: background-color 0.2s;
+  margin-left: 0;
+}
+
+@media (min-width: 640px) {
+  .filter-label {
+    margin-left: 1rem;
+  }
+}
+
+.filter-label:hover {
+  background-color: #f9fafb;
+}
+
+.filter-label span {
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.filter-checkbox {
+  width: 1rem;
+  height: 1rem;
+  color: #2563eb;
+  border-radius: 0.25rem;
+}
+
+.error-msg {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+}
+
+.loading-container {
+  text-align: center;
+  padding: 2rem 0;
+  margin-top: 1rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid #2563eb;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-container p {
+  margin-top: 1rem;
+  color: #4b5563;
+}
+
+.transactions-table-container {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.table-header {
+  padding: 1rem 1.5rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.filter-count {
+  font-size: 0.875rem;
+  font-weight: normal;
+  color: #4b5563;
+  margin-left: 0.5rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transactions-table thead {
+  background-color: #f3f4f6;
+}
+
+.transactions-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+  text-transform: uppercase;
+}
+
+.transactions-table tbody {
+  background-color: white;
+  divide-y: 1px solid #e5e7eb;
+}
+
+.transactions-table tbody tr {
+  transition: background-color 0.2s;
+}
+
+.transactions-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.transactions-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #1f2937;
+}
+
+.message-cell div {
+  word-break: break-words;
+  white-space: pre-wrap;
+  max-width: 20rem;
+}
+
+.tx-hash-link {
+  color: #2563eb;
+  font-family: monospace;
+  font-size: 0.75rem;
+}
+
+.tx-hash-link:hover {
+  text-decoration: underline;
+}
+
+.filter-info {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.filter-info-bold {
+  font-weight: 600;
+}
+
+.filter-info-text {
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+}
+
+.conversations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.conversation-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.conversation-header {
+  padding: 1rem 1.5rem;
+  background: linear-gradient(to right, #eff6ff, #eef2ff);
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.conversation-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.conversation-ens {
+  color: #1d4ed8;
+  margin-bottom: 0.25rem;
+}
+
+.conversation-address {
+  color: #2563eb;
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.conversation-address:hover {
+  text-decoration: underline;
+}
+
+.conversation-stats {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-top: 0.25rem;
+}
+
+.conversation-date {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.messages-container {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 24rem;
+  overflow-y: auto;
+}
+
+.message-group {
+  display: flex;
+}
+
+.message-group.sent {
+  justify-content: flex-end;
+}
+
+.message-group.received {
+  justify-content: flex-start;
+}
+
+.message-bubble-container {
+  max-width: 36rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.message-group.sent .message-bubble-container {
+  align-items: flex-end;
+}
+
+.message-group.received .message-bubble-container {
+  align-items: flex-start;
+}
+
+.message-bubble {
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.message-bubble.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.message-bubble.sent {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.message-bubble.sent:hover {
+  background-color: #2563eb;
+}
+
+.message-bubble.received {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.message-bubble.received:hover {
+  background-color: #d1d5db;
+}
+
+.message-text {
+  white-space: pre-wrap;
+  word-break: break-words;
+  font-size: 0.875rem;
+}
+
+.message-no-text {
+  font-size: 0.875rem;
+  font-style: italic;
+  opacity: 0.75;
+}
+
+.message-details {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.9;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.message-details.sent {
+  border-top: 1px solid rgba(147, 197, 253, 0.5);
+}
+
+.message-details.received {
+  border-top: 1px solid rgba(156, 163, 175, 0.5);
+}
+
+.message-tx-link {
+  font-family: monospace;
+}
+
+.message-bubble.sent .message-tx-link {
+  color: #dbeafe;
+}
+
+.message-bubble.sent .message-tx-link:hover {
+  text-decoration: underline;
+}
+
+.message-bubble.received .message-tx-link {
+  color: #2563eb;
+}
+
+.message-bubble.received .message-tx-link:hover {
+  text-decoration: underline;
+}

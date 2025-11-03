@@ -1,0 +1,57 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: #000000;
+  border-bottom: 1px solid #065f46;
+}
+
+.navbar-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-logo {
+  color: #00d084;
+  font-family: 'Courier New', monospace;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.navbar-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-btn {
+  padding: 0.5rem 1.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  transition: all 0.3s;
+  text-decoration: none;
+  border: 1px solid #00d084;
+}
+
+.nav-btn.active {
+  background-color: #00d084;
+  color: #000000;
+}
+
+.nav-btn:not(.active) {
+  background-color: transparent;
+  color: #00d084;
+}
+
+.nav-btn:not(.active):hover {
+  background-color: #00d084;
+  color: #000000;
+}
