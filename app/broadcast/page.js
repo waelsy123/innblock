@@ -97,24 +97,15 @@ function BroadcastReelContent() {
     setEnsNames(newEnsNames);
   };
 
-  const isHumanMessage = (input) => {
-    if (!input || input === '0x') return false;
-
-    try {
-      const decoded = input.startsWith('0x') ? input.slice(2) : input;
-      const text = decoded.match(/.{1,2}/g)?.map(byte => {
-        const code = parseInt(byte, 16);
-        return code >= 32 && code <= 126 ? String.fromCharCode(code) : '';
-      }).join('') || '';
-
-      const cleanText = text.replace(/\0/g, '').trim();
-      if (cleanText.length < 3) return false;
-
-      const printableChars = cleanText.replace(/[^a-zA-Z0-9\s.,!?;:'"()\-]/g, '').length;
-      return printableChars / cleanText.length > 0.7;
-    } catch (e) {
+  const isHumanMessage = (message) => {
+    if (!message || message.length === 0) {
       return false;
     }
+
+    const readableChars = message.match(/[\p{L}\p{N}\s.,!?;:'"()]/gu);
+    const readableRatio = readableChars ? readableChars.length / message.length : 0;
+
+    return readableRatio > 0.5 && message.length >= 3;
   };
 
   const decodeMessage = (input) => {
@@ -154,18 +145,18 @@ function BroadcastReelContent() {
       if (data.status === '1' && Array.isArray(data.result)) {
         // Filter: only transactions sent FROM this wallet with human messages
         const sentWithMessages = data.result
-          .filter(tx => {
-            const isSentByWallet = tx.from.toLowerCase() === targetAddress.toLowerCase();
-            const hasHumanMessage = isHumanMessage(tx.input);
-            return isSentByWallet && hasHumanMessage;
-          })
           .map(tx => ({
             ...tx,
             message: decodeMessage(tx.input),
             timestamp: new Date(parseInt(tx.timeStamp) * 1000).toLocaleString(),
             timestampRaw: tx.timeStamp,
             value: (parseInt(tx.value) / 1e18).toFixed(6)
-          }));
+          }))
+          .filter(tx => {
+            const isSentByWallet = tx.from.toLowerCase() === targetAddress.toLowerCase();
+            const hasHumanMessage = isHumanMessage(tx.message);
+            return isSentByWallet && hasHumanMessage;
+          });
 
         setBroadcasts(sentWithMessages);
 
