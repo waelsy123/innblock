@@ -102,10 +102,31 @@ function BroadcastReelContent() {
       return false;
     }
 
+    // Exclude messages that look like code
+    const codePatterns = [
+      /function\s*\(/i,
+      /const\s+\w+\s*=/i,
+      /let\s+\w+\s*=/i,
+      /var\s+\w+\s*=/i,
+      /=>\s*{/,
+      /useEffect|useState|useCallback/i,
+      /import\s+.*from/i,
+      /export\s+(default|const)/i,
+      /<\w+.*>/,  // HTML/JSX tags
+      /^\s*[\d\s+\-*/]+\s*$/,  // Just numbers and operators
+      /\w+\.\w+\(/,  // Method calls like console.log(
+    ];
+
+    if (codePatterns.some(pattern => pattern.test(message))) {
+      return false;
+    }
+
+    // Check for reasonable character ratio
     const readableChars = message.match(/[\p{L}\p{N}\s.,!?;:'"()]/gu);
     const readableRatio = readableChars ? readableChars.length / message.length : 0;
 
-    return readableRatio > 0.5 && message.length >= 3;
+    // More strict: require 70% readable characters instead of 50%
+    return readableRatio > 0.7 && message.length >= 3;
   };
 
   const decodeMessage = (input) => {
