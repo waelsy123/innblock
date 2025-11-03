@@ -19,6 +19,12 @@ export default function SendMessagePage() {
   const [message, setMessage] = useState('');
   const [ethAmount, setEthAmount] = useState('0');
   const [ensNames, setEnsNames] = useState({});
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const resolveENS = async (address) => {
     if (!address || address === ZERO_ADDRESS) return null;
@@ -100,7 +106,11 @@ export default function SendMessagePage() {
         <h1 className="send-title">Send Message</h1>
         <p className="send-subtitle">Broadcast your message on-chain</p>
 
-        {!isConnected ? (
+        {!mounted ? (
+          <div className="connect-section">
+            <p className="connect-prompt">Loading...</p>
+          </div>
+        ) : !isConnected ? (
           <div className="connect-section">
             <p className="connect-prompt">Connect your wallet to send messages</p>
             <div className="connectors-list">
