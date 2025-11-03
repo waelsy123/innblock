@@ -1,15 +1,16 @@
 .chatlog-container {
   min-height: 100vh;
-  background-color: #f9fafb;
+  background-color: #000000;
   padding: 6rem 2rem 2rem;
   max-width: 1280px;
   margin: 0 auto;
 }
 
 .chatlog-header {
-  background-color: white;
+  background-color: #0a0a0a;
   border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #1a1a1a;
+  box-shadow: 0 10px 15px -3px rgba(0, 208, 132, 0.1);
   padding: 2rem;
   margin-bottom: 1.5rem;
 }
@@ -17,8 +18,10 @@
 .chatlog-title {
   font-size: 1.875rem;
   font-weight: bold;
-  color: #1f2937;
+  font-family: 'Courier New', monospace;
+  color: #00d084;
   margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(0, 208, 132, 0.3);
 }
 
 .search-form {
@@ -40,69 +43,86 @@
 .address-input {
   flex: 1;
   padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
   border-radius: 0.5rem;
-  font-family: monospace;
+  font-family: 'Courier New', monospace;
   font-size: 0.875rem;
+  color: #00d084;
 }
 
 .address-input:focus {
   outline: none;
-  ring: 2px;
-  ring-color: #3b82f6;
-  border-color: transparent;
+  border-color: #00d084;
+  box-shadow: 0 0 0 2px rgba(0, 208, 132, 0.2);
+}
+
+.address-input::placeholder {
+  color: #666666;
 }
 
 .search-btn {
   padding: 0.5rem 1.5rem;
-  background-color: #16a34a;
-  color: white;
+  background-color: #00d084;
+  color: #000000;
   border-radius: 0.5rem;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 .search-btn:hover {
-  background-color: #15803d;
+  background-color: #00ff9d;
+  box-shadow: 0 0 15px rgba(0, 208, 132, 0.5);
 }
 
 .current-address {
-  color: #4b5563;
+  color: #888888;
   margin-bottom: 1rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
 }
 
 .ens-name {
   margin-left: 0.5rem;
   font-weight: 600;
-  color: #1d4ed8;
+  color: #00d084;
 }
 
 .address-code {
-  background-color: #f3f4f6;
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;
   margin-left: 0.5rem;
+  color: #00d084;
 }
 
 .load-btn {
   padding: 0.5rem 1.5rem;
-  background-color: #2563eb;
-  color: white;
+  background-color: #00d084;
+  color: #000000;
   border-radius: 0.5rem;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 .load-btn:hover {
-  background-color: #1d4ed8;
+  background-color: #00ff9d;
+  box-shadow: 0 0 15px rgba(0, 208, 132, 0.5);
 }
 
 .load-btn:disabled {
-  background-color: #9ca3af;
+  background-color: #333333;
+  color: #666666;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .view-controls {
@@ -128,20 +148,25 @@
 .view-btn {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  border: none;
+  border: 1px solid #333333;
   cursor: pointer;
+  font-family: 'Courier New', monospace;
   transition: all 0.2s;
-  background-color: #e5e7eb;
-  color: #374151;
+  background-color: #1a1a1a;
+  color: #888888;
 }
 
 .view-btn:hover {
-  background-color: #d1d5db;
+  background-color: #262626;
+  border-color: #00d084;
+  color: #00d084;
 }
 
 .view-btn.active {
-  background-color: #2563eb;
-  color: white;
+  background-color: #00d084;
+  color: #000000;
+  border-color: #00d084;
+  box-shadow: 0 0 10px rgba(0, 208, 132, 0.3);
 }
 
 .filter-label {
@@ -149,11 +174,11 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  background-color: white;
+  background-color: #1a1a1a;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #d1d5db;
-  transition: background-color 0.2s;
+  border: 1px solid #333333;
+  transition: all 0.2s;
   margin-left: 0;
 }
 
@@ -164,28 +189,31 @@
 }
 
 .filter-label:hover {
-  background-color: #f9fafb;
+  background-color: #262626;
+  border-color: #00d084;
 }
 
 .filter-label span {
   font-size: 0.875rem;
-  color: #374151;
+  font-family: 'Courier New', monospace;
+  color: #888888;
 }
 
 .filter-checkbox {
   width: 1rem;
   height: 1rem;
-  color: #2563eb;
-  border-radius: 0.25rem;
+  accent-color: #00d084;
+  cursor: pointer;
 }
 
 .error-msg {
-  background-color: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
+  background-color: #1a0000;
+  border: 1px solid #ff0000;
+  color: #ff6666;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   margin-top: 1rem;
+  font-family: 'Courier New', monospace;
 }
 
 .loading-container {
@@ -198,7 +226,7 @@
   display: inline-block;
   width: 3rem;
   height: 3rem;
-  border: 2px solid #2563eb;
+  border: 2px solid #00d084;
   border-bottom-color: transparent;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -212,32 +240,35 @@
 
 .loading-container p {
   margin-top: 1rem;
-  color: #4b5563;
+  color: #00d084;
+  font-family: 'Courier New', monospace;
 }
 
 .transactions-table-container {
-  background-color: white;
+  background-color: #0a0a0a;
   border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #1a1a1a;
+  box-shadow: 0 10px 15px -3px rgba(0, 208, 132, 0.1);
   overflow: hidden;
 }
 
 .table-header {
   padding: 1rem 1.5rem;
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: #0f0f0f;
+  border-bottom: 1px solid #1a1a1a;
 }
 
 .table-header h2 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  font-family: 'Courier New', monospace;
+  color: #00d084;
 }
 
 .filter-count {
   font-size: 0.875rem;
   font-weight: normal;
-  color: #4b5563;
+  color: #666666;
   margin-left: 0.5rem;
 }
 
@@ -251,7 +282,7 @@
 }
 
 .transactions-table thead {
-  background-color: #f3f4f6;
+  background-color: #0f0f0f;
 }
 
 .transactions-table th {
@@ -259,52 +290,59 @@
   text-align: left;
   font-size: 0.75rem;
   font-weight: 500;
-  color: #374151;
+  font-family: 'Courier New', monospace;
+  color: #00d084;
   text-transform: uppercase;
+  border-bottom: 1px solid #1a1a1a;
 }
 
 .transactions-table tbody {
-  background-color: white;
-  divide-y: 1px solid #e5e7eb;
+  background-color: #0a0a0a;
 }
 
 .transactions-table tbody tr {
   transition: background-color 0.2s;
+  border-bottom: 1px solid #1a1a1a;
 }
 
 .transactions-table tbody tr:hover {
-  background-color: #f9fafb;
+  background-color: #0f0f0f;
 }
 
 .transactions-table td {
   padding: 0.75rem 1rem;
   font-size: 0.875rem;
-  color: #1f2937;
+  font-family: 'Courier New', monospace;
+  color: #cccccc;
 }
 
 .message-cell div {
   word-break: break-words;
   white-space: pre-wrap;
   max-width: 20rem;
+  color: #00d084;
 }
 
 .tx-hash-link {
-  color: #2563eb;
-  font-family: monospace;
+  color: #00d084;
+  font-family: 'Courier New', monospace;
   font-size: 0.75rem;
+  transition: color 0.2s;
 }
 
 .tx-hash-link:hover {
+  color: #00ff9d;
   text-decoration: underline;
 }
 
 .filter-info {
-  background-color: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #1e40af;
+  background-color: #0a1a0a;
+  border: 1px solid #00d084;
+  color: #00d084;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   margin-bottom: 1rem;
+  font-family: 'Courier New', monospace;
 }
 
 .filter-info-bold {
@@ -314,6 +352,7 @@
 .filter-info-text {
   font-size: 0.875rem;
   margin-left: 0.5rem;
+  color: #888888;
 }
 
 .conversations-list {
@@ -323,16 +362,17 @@
 }
 
 .conversation-card {
-  background-color: white;
+  background-color: #0a0a0a;
   border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #1a1a1a;
+  box-shadow: 0 10px 15px -3px rgba(0, 208, 132, 0.1);
   overflow: hidden;
 }
 
 .conversation-header {
   padding: 1rem 1.5rem;
-  background: linear-gradient(to right, #eff6ff, #eef2ff);
-  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(to right, #0a0a0a, #0f0f0f);
+  border-bottom: 1px solid #1a1a1a;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -341,33 +381,38 @@
 .conversation-header h3 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  font-family: 'Courier New', monospace;
+  color: #cccccc;
 }
 
 .conversation-ens {
-  color: #1d4ed8;
+  color: #00d084;
   margin-bottom: 0.25rem;
 }
 
 .conversation-address {
-  color: #2563eb;
-  font-family: monospace;
+  color: #00d084;
+  font-family: 'Courier New', monospace;
   font-size: 0.875rem;
+  transition: color 0.2s;
 }
 
 .conversation-address:hover {
+  color: #00ff9d;
   text-decoration: underline;
 }
 
 .conversation-stats {
   font-size: 0.875rem;
-  color: #4b5563;
+  color: #888888;
   margin-top: 0.25rem;
+  font-family: 'Courier New', monospace;
 }
 
 .conversation-date {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #666666;
+  font-family: 'Courier New', monospace;
 }
 
 .messages-container {
@@ -377,6 +422,24 @@
   gap: 0.5rem;
   max-height: 24rem;
   overflow-y: auto;
+  background-color: #000000;
+}
+
+.messages-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background: #00d084;
 }
 
 .message-group {
@@ -411,6 +474,7 @@
   transition: all 0.2s;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
+  font-family: 'Courier New', monospace;
 }
 
 .message-bubble.mt-1 {
@@ -418,21 +482,25 @@
 }
 
 .message-bubble.sent {
-  background-color: #3b82f6;
-  color: white;
+  background-color: #00d084;
+  color: #000000;
+  border: 1px solid #00ff9d;
 }
 
 .message-bubble.sent:hover {
-  background-color: #2563eb;
+  background-color: #00ff9d;
+  box-shadow: 0 0 10px rgba(0, 208, 132, 0.5);
 }
 
 .message-bubble.received {
-  background-color: #e5e7eb;
-  color: #1f2937;
+  background-color: #1a1a1a;
+  color: #cccccc;
+  border: 1px solid #333333;
 }
 
 .message-bubble.received:hover {
-  background-color: #d1d5db;
+  background-color: #262626;
+  border-color: #00d084;
 }
 
 .message-text {
@@ -458,29 +526,33 @@
 }
 
 .message-details.sent {
-  border-top: 1px solid rgba(147, 197, 253, 0.5);
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .message-details.received {
-  border-top: 1px solid rgba(156, 163, 175, 0.5);
+  border-top: 1px solid #333333;
 }
 
 .message-tx-link {
-  font-family: monospace;
+  font-family: 'Courier New', monospace;
+  transition: color 0.2s;
 }
 
 .message-bubble.sent .message-tx-link {
-  color: #dbeafe;
+  color: #000000;
+  opacity: 0.8;
 }
 
 .message-bubble.sent .message-tx-link:hover {
+  opacity: 1;
   text-decoration: underline;
 }
 
 .message-bubble.received .message-tx-link {
-  color: #2563eb;
+  color: #00d084;
 }
 
 .message-bubble.received .message-tx-link:hover {
+  color: #00ff9d;
   text-decoration: underline;
 }
