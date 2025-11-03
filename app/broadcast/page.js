@@ -142,7 +142,7 @@ function BroadcastReelContent() {
 
     try {
       const response = await fetch(
-        `https://api.etherscan.io/api?module=account&action=txlist&address=${targetAddress}&startblock=0&endblock=99999999&sort=desc&apikey=${API_KEY}`
+        `https://api.etherscan.io/v2/api?chainid=1&module=account&action=txlist&address=${targetAddress}&startblock=0&endblock=99999999&sort=desc&apikey=${API_KEY}`
       );
 
       if (!response.ok) {
