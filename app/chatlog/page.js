@@ -60,14 +60,20 @@ function ChatlogContent() {
     setSavedAddresses(addresses);
   };
 
+  /**
+   * IMPORTANT: This logic is shared with microservice/filters.js via shared/messageFilters.js
+   * Any changes here must be synced to that file to maintain consistency!
+   */
+
   const decodeInputData = (inputData) => {
     if (!inputData || inputData === '0x' || inputData.length <= 2) {
       return '';
     }
 
     try {
-      const hex = inputData.slice(2);
+      const hex = inputData.startsWith('0x') ? inputData.slice(2) : inputData;
       const bytes = [];
+
       for (let i = 0; i < hex.length; i += 2) {
         bytes.push(parseInt(hex.substr(i, 2), 16));
       }
@@ -75,7 +81,8 @@ function ChatlogContent() {
       const decoder = new TextDecoder('utf-8');
       const str = decoder.decode(new Uint8Array(bytes));
 
-      return str.trim();
+      // Remove null bytes and trim whitespace (same as backend)
+      return str.replace(/\0/g, '').trim();
     } catch (e) {
       return '';
     }
@@ -101,9 +108,11 @@ function ChatlogContent() {
       return false;
     }
 
+    // Use Unicode-aware regex to support any language
     const readableChars = message.match(/[\p{L}\p{N}\s.,!?;:'"()\-_]/gu);
     const readableRatio = readableChars ? readableChars.length / message.length : 0;
 
+    // Require at least 60% readable characters and minimum 3 chars
     return readableRatio > 0.6 && message.length >= 3;
   };
 
