@@ -23,7 +23,6 @@ function ChatlogContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [viewMode, setViewMode] = useState(viewParam === 'grouped' ? 'grouped' : 'all');
-  const [ensNames, setEnsNames] = useState({});
   const [filterHumanOnly, setFilterHumanOnly] = useState(humanParam === 'true' || humanParam === '1');
   const [expandedMessage, setExpandedMessage] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -52,7 +51,6 @@ function ChatlogContent() {
     addresses.unshift({
       address,
       timestamp: Date.now(),
-      ensName: ensNames[address] || null,
     });
 
     // Keep only last 10 addresses
@@ -60,51 +58,6 @@ function ChatlogContent() {
 
     localStorage.setItem('searchedAddresses', JSON.stringify(addresses));
     setSavedAddresses(addresses);
-  };
-
-  const resolveENS = async (address) => {
-    if (ensNames[address]) {
-      return ensNames[address];
-    }
-
-    try {
-      const response = await fetch(
-        `https://api.etherscan.io/api?module=account&action=getaddressbyens&address=${address}&apikey=${API_KEY}`
-      );
-      const data = await response.json();
-
-      if (data.status === '1' && data.result) {
-        return data.result;
-      }
-
-      const reverseResponse = await fetch(
-        `https://api.etherscan.io/v2/api?chainid=1&module=account&action=addresstotag&address=${address}&apikey=${API_KEY}`
-      );
-      const reverseData = await reverseResponse.json();
-
-      if (reverseData.status === '1' && reverseData.result && reverseData.result.length > 0) {
-        return reverseData.result[0].name;
-      }
-    } catch (e) {
-      // Silent fail
-    }
-    return null;
-  };
-
-  const fetchENSNames = async (addresses) => {
-    const uniqueAddresses = [...new Set(addresses)];
-    const newEnsNames = { ...ensNames };
-
-    for (const address of uniqueAddresses) {
-      if (!newEnsNames[address]) {
-        const ensName = await resolveENS(address);
-        if (ensName) {
-          newEnsNames[address] = ensName;
-        }
-      }
-    }
-
-    setEnsNames(newEnsNames);
   };
 
   const decodeInputData = (inputData) => {
@@ -189,12 +142,6 @@ function ChatlogContent() {
       }));
 
       setTransactions(txs);
-
-      const allAddresses = [
-        ...new Set([targetAddress, ...txs.map((tx) => tx.from), ...txs.map((tx) => tx.to)]),
-      ];
-
-      fetchENSNames(allAddresses);
     } catch (err) {
       if (!silent) {
         setError(err.message);
@@ -338,14 +285,12 @@ function ChatlogContent() {
   };
 
   const AddressDisplay = ({ address, short = false }) => {
-    const ensName = ensNames[address];
     const displayAddress = short
       ? `${address.slice(0, 8)}...${address.slice(-6)}`
       : address;
 
     return (
       <div className="address-display">
-        {ensName && <span className="address-ens">{ensName}</span>}
         <a
           href={`https://etherscan.io/address/${address}`}
           target="_blank"
@@ -387,9 +332,6 @@ function ChatlogContent() {
 
         <p className="current-address">
           Current Address:
-          {ensNames[targetAddress] && (
-            <span className="ens-name">{ensNames[targetAddress]}</span>
-          )}
           <code className="address-code">{targetAddress}</code>
         </p>
 
@@ -530,9 +472,6 @@ function ChatlogContent() {
                 <div className="conversation-header">
                   <div>
                     <h3>
-                      {ensNames[group.address] && (
-                        <div className="conversation-ens">{ensNames[group.address]}</div>
-                      )}
                       <a
                         href={`https://etherscan.io/address/${group.address}`}
                         target="_blank"
