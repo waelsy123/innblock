@@ -24,6 +24,11 @@ class TransactionStorage {
   }
 
   updateAddressStats(tx) {
+    // Only count human-readable messages for hot addresses
+    if (!tx.isHuman) {
+      return;
+    }
+
     // Update sender stats
     if (!this.addressStats.has(tx.from)) {
       this.addressStats.set(tx.from, {
@@ -56,6 +61,11 @@ class TransactionStorage {
   }
 
   decrementAddressStats(tx) {
+    // Only process if it was a human message
+    if (!tx.isHuman) {
+      return;
+    }
+
     // When removing old transactions, decrement stats
     if (this.addressStats.has(tx.from)) {
       const stats = this.addressStats.get(tx.from);
@@ -90,11 +100,13 @@ class TransactionStorage {
       filtered = filtered.filter(tx => tx.to && tx.to.toLowerCase() === toAddress);
     }
 
-    // Filter by human flag (all transactions in storage are human-readable by default)
-    // If human=false, return empty array since we only store human messages
-    if (filters.human === false) {
-      return [];
+    // Filter by human flag - check the isHuman property of each transaction
+    if (filters.human === true) {
+      filtered = filtered.filter(tx => tx.isHuman === true);
+    } else if (filters.human === false) {
+      filtered = filtered.filter(tx => tx.isHuman === false);
     }
+    // If filters.human is undefined, return all transactions
 
     return filtered.slice(0, Math.min(limit, filtered.length));
   }

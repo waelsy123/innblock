@@ -58,17 +58,13 @@ class BlockPoller {
   }
 
   processTransaction(tx, blockTimestamp) {
-    // Skip if no input data
-    if (!tx.input || tx.input === '0x') {
-      return null;
-    }
+    // Decode the message if input data exists
+    let message = '';
+    let isHuman = false;
 
-    // Decode the message
-    const message = decodeMessage(tx.input);
-
-    // Check if it's a human-readable message
-    if (!isHumanMessage(message)) {
-      return null;
+    if (tx.input && tx.input !== '0x') {
+      message = decodeMessage(tx.input);
+      isHuman = isHumanMessage(message);
     }
 
     // Convert hex values to readable format
@@ -82,6 +78,7 @@ class BlockPoller {
       blockNumber: parseInt(tx.blockNumber, 16),
       timestamp: timestamp,
       message: message,
+      isHuman: isHuman,
       value: value.toFixed(6),
       timestampFormatted: new Date(timestamp * 1000).toLocaleString()
     };
@@ -131,17 +128,20 @@ class BlockPoller {
           const blockTimestamp = blockData.timestamp;
 
           let humanMessages = 0;
+          let totalProcessed = 0;
+
           for (const tx of blockData.transactions) {
             const processedTx = this.processTransaction(tx, blockTimestamp);
             if (processedTx) {
               this.storage.addTransaction(processedTx);
-              humanMessages++;
+              totalProcessed++;
+              if (processedTx.isHuman) {
+                humanMessages++;
+              }
             }
           }
 
-          if (humanMessages > 0) {
-            console.log(`Block ${blockNum}: Found ${humanMessages} human message(s) out of ${blockData.transactions.length} transactions`);
-          }
+          console.log(`Block ${blockNum}: Stored ${totalProcessed} transactions (${humanMessages} human messages)`);
         }
 
         this.lastProcessedBlock = blockNum;
