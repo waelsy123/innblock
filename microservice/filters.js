@@ -1,52 +1,16 @@
-// Human message detection (same logic as broadcast page)
+// Human message detection (matches chatlog page logic for consistency)
 function isHumanMessage(message) {
   if (!message || message.length === 0) {
     return false;
   }
 
-  // Exclude messages with too many non-ASCII or control characters
-  const nonAsciiCount = (message.match(/[^\x20-\x7E]/g) || []).length;
-  const nonAsciiRatio = nonAsciiCount / message.length;
-
-  // Reject if more than 20% non-ASCII characters (garbled text)
-  if (nonAsciiRatio > 0.2) {
-    return false;
-  }
-
-  // Exclude messages that look like code
-  const codePatterns = [
-    /function\s*\(/i,
-    /const\s+\w+\s*=/i,
-    /let\s+\w+\s*=/i,
-    /var\s+\w+\s*=/i,
-    /=>\s*{/,
-    /useEffect|useState|useCallback/i,
-    /import\s+.*from/i,
-    /export\s+(default|const)/i,
-    /<\w+.*>/,  // HTML/JSX tags
-    /^\s*[\d\s+\-*/]+\s*$/,  // Just numbers and operators
-    /\w+\.\w+\(/,  // Method calls like console.log(
-  ];
-
-  if (codePatterns.some(pattern => pattern.test(message))) {
-    return false;
-  }
-
-  // Count alphanumeric characters (letters and numbers)
-  const alphanumericCount = (message.match(/[a-zA-Z0-9]/g) || []).length;
-  const alphanumericRatio = alphanumericCount / message.length;
-
-  // Require at least 50% alphanumeric characters
-  if (alphanumericRatio < 0.5) {
-    return false;
-  }
-
-  // Check for reasonable character ratio
-  const readableChars = message.match(/[a-zA-Z0-9\s.,!?;:'"()\-]/g);
+  // Use the same logic as chatlog page - more inclusive and supports Unicode
+  // Matches letters, numbers, spaces, and common punctuation from any language
+  const readableChars = message.match(/[\p{L}\p{N}\s.,!?;:'"()]/gu);
   const readableRatio = readableChars ? readableChars.length / message.length : 0;
 
-  // More strict: require 80% readable characters
-  return readableRatio > 0.8 && message.length >= 3;
+  // Require at least 50% readable characters and minimum 3 chars
+  return readableRatio > 0.5 && message.length >= 3;
 }
 
 function decodeMessage(input) {
