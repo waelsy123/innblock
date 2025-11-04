@@ -75,8 +75,28 @@ class TransactionStorage {
     }
   }
 
-  getLatestTransactions(limit = 100) {
-    return this.transactions.slice(0, Math.min(limit, this.transactions.length));
+  getLatestTransactions(limit = 100, filters = {}) {
+    let filtered = this.transactions;
+
+    // Filter by 'from' address
+    if (filters.from) {
+      const fromAddress = filters.from.toLowerCase();
+      filtered = filtered.filter(tx => tx.from.toLowerCase() === fromAddress);
+    }
+
+    // Filter by 'to' address
+    if (filters.to) {
+      const toAddress = filters.to.toLowerCase();
+      filtered = filtered.filter(tx => tx.to && tx.to.toLowerCase() === toAddress);
+    }
+
+    // Filter by human flag (all transactions in storage are human-readable by default)
+    // If human=false, return empty array since we only store human messages
+    if (filters.human === false) {
+      return [];
+    }
+
+    return filtered.slice(0, Math.min(limit, filtered.length));
   }
 
   getHotAddresses(limit = 50) {

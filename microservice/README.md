@@ -7,7 +7,7 @@ A real-time transaction pooling service that monitors Ethereum blockchain for hu
 - 🔄 **Real-time Block Polling**: Automatically fetches new blocks every 10 seconds
 - 💬 **Human Message Detection**: Filters transactions to find only human-readable messages
 - 🔥 **Hot Address Ranking**: Tracks and ranks addresses by message activity
-- 💾 **In-Memory Storage**: Fast access to latest 10,000 transactions
+- 💾 **In-Memory Storage**: Fast access to latest 100,000 transactions
 - 📊 **REST API**: Easy integration with frontend applications
 
 ## Installation
@@ -25,7 +25,7 @@ Edit `.env` file:
 ETHERSCAN_API_KEY=your_api_key_here
 PORT=3001
 POLL_INTERVAL=10000
-MAX_TRANSACTIONS=10000
+MAX_TRANSACTIONS=100000
 ```
 
 ## Running
@@ -44,16 +44,33 @@ npm start
 
 ### Get Latest Transactions
 ```
-GET /api/transactions?limit=100
+GET /api/transactions?limit=100&from=0x...&to=0x...&human=true
 ```
 
-Returns the most recent human-readable transactions.
+Returns the most recent transactions with optional filtering.
+
+**Query Parameters:**
+- `limit` (number, default: 100): Maximum number of transactions to return
+- `from` (string, optional): Filter by sender address (case-insensitive)
+- `to` (string, optional): Filter by recipient address (case-insensitive)
+- `human` (boolean, default: true): Filter human-readable messages only
+
+**Examples:**
+```
+GET /api/transactions?limit=50
+GET /api/transactions?from=0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb
+GET /api/transactions?to=0x0000000000000000000000000000000000000000
+GET /api/transactions?from=0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb&limit=10
+```
 
 **Response:**
 ```json
 {
   "success": true,
   "count": 100,
+  "filters": {
+    "from": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+  },
   "data": [
     {
       "hash": "0x...",
@@ -108,7 +125,7 @@ Returns service statistics.
   "success": true,
   "data": {
     "totalTransactions": 1523,
-    "maxSize": 10000,
+    "maxSize": 100000,
     "uniqueAddresses": 456,
     "oldestTimestamp": 1234567890,
     "newestTimestamp": 1234567999,
@@ -129,7 +146,7 @@ GET /health
 1. **Block Polling**: Service queries Etherscan API every 10 seconds for the latest block number
 2. **Transaction Fetching**: For each new block, fetches all transactions
 3. **Message Filtering**: Decodes transaction input data and filters for human-readable content
-4. **Storage**: Adds valid transactions to in-memory store (FIFO, max 10k)
+4. **Storage**: Adds valid transactions to in-memory store (FIFO, max 100k)
 5. **Address Tracking**: Updates activity statistics for sender and recipient addresses
 6. **Ranking**: Calculates "hotness" score based on message count and recency
 

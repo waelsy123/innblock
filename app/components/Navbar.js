@@ -39,6 +39,12 @@ export default function Navbar() {
             >
               SEND MESSAGE
             </Link>
+            <Link
+              href="/hot-chatters"
+              className={`nav-btn ${pathname === '/hot-chatters' ? 'active' : ''}`}
+            >
+              HOT CHATTERS
+            </Link>
           </div>
         </div>
       </div>

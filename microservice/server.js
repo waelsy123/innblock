@@ -23,11 +23,25 @@ const poller = new BlockPoller(storage, API_KEY);
 // Get latest transactions
 app.get('/api/transactions', (req, res) => {
   const limit = parseInt(req.query.limit) || 100;
-  const transactions = storage.getLatestTransactions(limit);
+  const filters = {};
+
+  // Add filters from query params
+  if (req.query.from) {
+    filters.from = req.query.from;
+  }
+  if (req.query.to) {
+    filters.to = req.query.to;
+  }
+  if (req.query.human !== undefined) {
+    filters.human = req.query.human === 'true' || req.query.human === '1';
+  }
+
+  const transactions = storage.getLatestTransactions(limit, filters);
 
   res.json({
     success: true,
     count: transactions.length,
+    filters: filters,
     data: transactions
   });
 });
@@ -72,12 +86,18 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
   res.json({
     service: 'Innblock Transaction Pool Service',
-    version: '1.0.0',
+    version: '1.1.0',
     endpoints: {
-      '/api/transactions?limit=100': 'Get latest transactions',
-      '/api/hot-addresses?limit=50': 'Get hot addresses by activity',
+      '/api/transactions': 'Get latest transactions (params: limit, from, to, human)',
+      '/api/hot-addresses': 'Get hot addresses by activity (params: limit)',
       '/api/stats': 'Get service statistics',
       '/health': 'Health check'
+    },
+    filters: {
+      limit: 'Number of results to return (default: 100)',
+      from: 'Filter by sender address (case-insensitive)',
+      to: 'Filter by recipient address (case-insensitive)',
+      human: 'Filter human-readable messages (true/false, default: true)'
     }
   });
 });
