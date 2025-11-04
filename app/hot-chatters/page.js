@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import './hot-chatters.css';
 
 export default function HotChatters() {
+  const router = useRouter();
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -45,8 +47,8 @@ export default function HotChatters() {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  const copyToClipboard = (address) => {
-    navigator.clipboard.writeText(address);
+  const handleAddressClick = (address) => {
+    router.push(`/chatlog?address=${address}`);
   };
 
   return (
@@ -112,7 +114,7 @@ export default function HotChatters() {
                 <span
                   className="address-text"
                   title={addr.address}
-                  onClick={() => copyToClipboard(addr.address)}
+                  onClick={() => handleAddressClick(addr.address)}
                 >
                   {formatAddress(addr.address)}
                 </span>
@@ -121,6 +123,7 @@ export default function HotChatters() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="etherscan-link"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   ↗
                 </a>

@@ -44,13 +44,17 @@ class BlockPoller {
         }
       });
 
-      if (response.data && response.data.result && response.data.result.transactions) {
-        return response.data.result.transactions;
+      if (response.data && response.data.result) {
+        const block = response.data.result;
+        return {
+          transactions: block.transactions || [],
+          timestamp: block.timestamp || '0x0'
+        };
       }
     } catch (error) {
       console.error(`Error fetching block ${blockNumber}:`, error.message);
     }
-    return [];
+    return { transactions: [], timestamp: '0x0' };
   }
 
   processTransaction(tx, blockTimestamp) {
@@ -121,13 +125,13 @@ class BlockPoller {
       console.log(`Processing ${blocksToProcess.length} new block(s): ${blocksToProcess[0]} to ${blocksToProcess[blocksToProcess.length - 1]}`);
 
       for (const blockNum of blocksToProcess) {
-        const transactions = await this.getBlockTransactions(blockNum);
+        const blockData = await this.getBlockTransactions(blockNum);
 
-        if (transactions.length > 0) {
-          const blockTimestamp = transactions[0].timestamp || '0x0';
+        if (blockData.transactions.length > 0) {
+          const blockTimestamp = blockData.timestamp;
 
           let humanMessages = 0;
-          for (const tx of transactions) {
+          for (const tx of blockData.transactions) {
             const processedTx = this.processTransaction(tx, blockTimestamp);
             if (processedTx) {
               this.storage.addTransaction(processedTx);
@@ -136,7 +140,7 @@ class BlockPoller {
           }
 
           if (humanMessages > 0) {
-            console.log(`Block ${blockNum}: Found ${humanMessages} human message(s) out of ${transactions.length} transactions`);
+            console.log(`Block ${blockNum}: Found ${humanMessages} human message(s) out of ${blockData.transactions.length} transactions`);
           }
         }
 
