@@ -160,6 +160,51 @@ hotness = totalMessages * recencyMultiplier
 
 Addresses with recent activity get higher scores, decaying over 24 hours.
 
+## Deployment
+
+### Important: Separate Deployment Required
+
+⚠️ **This microservice cannot be deployed with Vercel** (which only deploys the Next.js frontend). The microservice must be deployed separately as a standalone Node.js service.
+
+**Deployment Options:**
+
+1. **Railway** (recommended):
+   ```bash
+   railway login
+   railway init
+   railway up
+   ```
+
+2. **Render**:
+   - Create new Web Service
+   - Connect repository
+   - Set start command: `cd microservice && npm start`
+   - Add environment variables from `.env`
+
+3. **AWS EC2/DigitalOcean/etc**:
+   ```bash
+   pm2 start server.js
+   pm2 save
+   pm2 startup
+   ```
+
+4. **Alternative: Migrate to Next.js API Routes** (if you want single deployment):
+   - Move logic to `app/api/` directory
+   - Use Next.js API routes instead of Express
+   - Deploy everything together on Vercel
+
+### Environment Variables
+
+Make sure to set these on your deployment platform:
+- `ETHERSCAN_API_KEY`
+- `PORT` (often auto-assigned by platform)
+- `POLL_INTERVAL`
+- `MAX_TRANSACTIONS`
+
+### Updating Frontend API URL
+
+After deploying the microservice, update the API URL in your Next.js frontend to point to the deployed service instead of `http://localhost:3001`.
+
 ## Notes
 
 - Requires valid Etherscan API key
